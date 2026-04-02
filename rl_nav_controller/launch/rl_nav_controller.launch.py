@@ -28,6 +28,56 @@ def generate_launch_description():
     )
     launch_zed = LaunchConfiguration('launch_zed')  # will be either 'true' or 'false'
 
+    odom_topic_arg = DeclareLaunchArgument(
+        'odom_topic',
+        default_value='/dlio/odom_node/odom',
+        description='Odometry topic for the navigation policy.'
+    )
+    odom_topic = LaunchConfiguration('odom_topic')
+
+    depth_topic_arg = DeclareLaunchArgument(
+        'depth_topic',
+        default_value='/zed/zed_node/depth/depth_registered',
+        description='Depth image topic for the navigation policy.'
+    )
+    depth_topic = LaunchConfiguration('depth_topic')
+
+    preprocess_model_arg = DeclareLaunchArgument(
+        'preprocess_model',
+        default_value=PathJoinSubstitution([
+            FindPackageShare('rl_nav_controller'),
+            'deployment_policies',
+            'vae_encoder.onnx'
+        ]),
+        description='Depth preprocessing model path.'
+    )
+    preprocess_model = LaunchConfiguration('preprocess_model')
+
+    policy_model_arg = DeclareLaunchArgument(
+        'policy_model',
+        default_value=PathJoinSubstitution([
+            FindPackageShare('rl_nav_controller'),
+            'deployment_policies',
+            'nav_policy.onnx'
+        ]),
+        description='Navigation policy model path.'
+    )
+    policy_model = LaunchConfiguration('policy_model')
+
+    base_frame_arg = DeclareLaunchArgument(
+        'base_frame',
+        default_value='base_link',
+        description='Base frame used by the static camera transform.'
+    )
+    base_frame = LaunchConfiguration('base_frame')
+
+    camera_frame_arg = DeclareLaunchArgument(
+        'camera_frame',
+        default_value='zed_camera_link',
+        description='Camera frame used by the static camera transform.'
+    )
+    camera_frame = LaunchConfiguration('camera_frame')
+
     # ----------------------------------------------------------------------------
     # 2. Package names
     # ----------------------------------------------------------------------------
@@ -78,7 +128,7 @@ def generate_launch_description():
         arguments=[
             "0.387", "0.0", "0.28",
             "0", "0.349", "0",
-            "base_link", "zed_camera_link"
+            base_frame, camera_frame
         ],
     )
 
@@ -99,7 +149,11 @@ def generate_launch_description():
                 "'",
                 sim,
                 "' == 'true' and '--sim' or ''"
-            ])
+            ]),
+            '--odom-topic', odom_topic,
+            '--depth-topic', depth_topic,
+            '--preprocess-model', preprocess_model,
+            '--policy-model', policy_model,
         ]
     )
 
@@ -110,6 +164,12 @@ def generate_launch_description():
         # 1) declare arguments
         sim_arg,
         launch_zed_arg,
+        odom_topic_arg,
+        depth_topic_arg,
+        preprocess_model_arg,
+        policy_model_arg,
+        base_frame_arg,
+        camera_frame_arg,
 
         # 2) always-launch nodes
         joy_node,

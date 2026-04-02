@@ -12,6 +12,7 @@ setup(
         (os.path.join('share', package_name), ['package.xml']),
         (os.path.join('share', package_name, 'launch'), glob('launch/*.py')),
         (os.path.join('share', package_name, 'deployment_policies'), glob('deployment_policies/*.onnx')),
+        (os.path.join('share', package_name, 'deployment_policies'), glob('deployment_policies/*.pt')),
     ],
     install_requires=[
         'setuptools',

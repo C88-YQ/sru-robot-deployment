@@ -290,6 +290,12 @@ class NavigationPolicyNode(Node):
         self,
         preprocess_model_path,
         policy_model_path,
+        odom_topic='/dlio/odom_node/odom',
+        depth_topic='/zed/zed_node/depth/depth_registered',
+        joy_topic='/rsl_joy',
+        goal_topic='/goal_pose',
+        cmd_vel_topic='/path_manager/path_manager_ros/nav_vel',
+        base_vel_topic='/walle_nav/robot_base_vel',
         min_depth=constants.DEFAULT_MIN_DEPTH,
         max_depth=constants.DEFAULT_MAX_DEPTH,
         control_frequency=constants.DEFAULT_CONTROL_FREQUENCY,
@@ -300,6 +306,12 @@ class NavigationPolicyNode(Node):
         Args:
             preprocess_model_path: Path to depth preprocessing model
             policy_model_path: Path to navigation policy model
+            odom_topic: Odometry topic
+            depth_topic: Depth image topic
+            joy_topic: Joystick topic
+            goal_topic: Goal pose topic
+            cmd_vel_topic: Navigation velocity output topic
+            base_vel_topic: Base-frame velocity topic
             min_depth: Minimum valid depth value in meters
             max_depth: Maximum valid depth value in meters
             control_frequency: Control loop frequency in Hz
@@ -319,14 +331,14 @@ class NavigationPolicyNode(Node):
 
         # Publishers
         self.cmd_vel_publisher = self.create_publisher(
-            Twist, '/path_manager/path_manager_ros/nav_vel', 10
+            Twist, cmd_vel_topic, 10
         )
         self.base_vel_publisher = self.create_publisher(
-            Twist, '/walle_nav/robot_base_vel', 10
+            Twist, base_vel_topic, 10
         )
         # Single publisher for all goal poses (moving goal, smart joystick, waypoints)
         self.goal_pose_publisher = self.create_publisher(
-            PoseStamped, '/goal_pose', 1
+            PoseStamped, goal_topic, 1
         )
 
         # Visualization publishers
@@ -345,16 +357,16 @@ class NavigationPolicyNode(Node):
 
         # Subscribers
         self.odom_subscriber = self.create_subscription(
-            Odometry, '/dlio/odom_node/odom', self.odom_callback, 10
+            Odometry, odom_topic, self.odom_callback, 10
         )
         self.depth_subscriber = self.create_subscription(
-            Image, '/zed/zed_node/depth/depth_registered', self.depth_callback, 10
+            Image, depth_topic, self.depth_callback, 10
         )
         self.joy_subscriber = self.create_subscription(
-            Joy, '/rsl_joy', self.joy_callback, 10
+            Joy, joy_topic, self.joy_callback, 10
         )
         self.target_position_subscriber = self.create_subscription(
-            PoseStamped, '/goal_pose', self.target_position_callback, 1
+            PoseStamped, goal_topic, self.target_position_callback, 1
         )
 
         # Utilities
@@ -412,6 +424,9 @@ class NavigationPolicyNode(Node):
         self.create_timer(smart_joystick_interval, self.update_smart_joystick_goal)
 
         self.get_logger().info('\033[92m' + 'Navigation policy node is ready.' + '\033[0m')
+        self.get_logger().info(
+            f'Using topics: odom={odom_topic}, depth={depth_topic}, joy={joy_topic}, goal={goal_topic}'
+        )
 
     def odom_callback(self, odom_msg: Odometry):
         """Process odometry messages and update robot state.
@@ -1025,21 +1040,67 @@ class NavigationPolicyNode(Node):
 def main(args=None):
     parser = argparse.ArgumentParser()
     parser.add_argument('--sim', action='store_true', help='run in simulation mode')
+    parser.add_argument('--preprocess-model', type=str, help='path to depth preprocessing model')
+    parser.add_argument('--policy-model', type=str, help='path to navigation policy model')
+    parser.add_argument('--odom-topic', default='/dlio/odom_node/odom', help='odometry topic')
+    parser.add_argument('--depth-topic', default='/zed/zed_node/depth/depth_registered', help='depth image topic')
+    parser.add_argument('--joy-topic', default='/rsl_joy', help='joystick topic')
+    parser.add_argument('--goal-topic', default='/goal_pose', help='goal pose topic')
+    parser.add_argument(
+        '--cmd-vel-topic',
+        default='/path_manager/path_manager_ros/nav_vel',
+        help='navigation velocity output topic'
+    )
+    parser.add_argument(
+        '--base-vel-topic',
+        default='/walle_nav/robot_base_vel',
+        help='base-frame velocity output topic'
+    )
+    parser.add_argument('--min-depth', type=float, default=0.25, help='minimum valid depth in meters')
+    parser.add_argument('--max-depth', type=float, default=10.0, help='maximum valid depth in meters')
+    parser.add_argument('--control-frequency', type=float, default=5.0, help='policy update rate in Hz')
     known_args, ros_args = parser.parse_known_args(args=args)
     rclpy.init(args=ros_args)
     use_sim = known_args.sim
 
     pkg_name = 'rl_nav_controller'
     pkg_path = get_package_share_directory(pkg_name)
-    preprocess_model_path = os.path.join(pkg_path, 'deployment_policies', 'vae_encoder.onnx')
-    policy_model_path = os.path.join(pkg_path, 'deployment_policies', 'nav_policy.onnx')
+    preprocess_model_path = known_args.preprocess_model or os.path.join(
+        pkg_path, 'deployment_policies', 'vae_encoder.onnx'
+    )
+    policy_model_path = known_args.policy_model or os.path.join(
+        pkg_path, 'deployment_policies', 'nav_policy.onnx'
+    )
+
+    if not os.path.exists(preprocess_model_path):
+        raise FileNotFoundError(f'Preprocess model not found: {preprocess_model_path}')
+    if not os.path.exists(policy_model_path):
+        raise FileNotFoundError(f'Policy model not found: {policy_model_path}')
+
+    if not preprocess_model_path.endswith('.onnx'):
+        raise RuntimeError(
+            'The current deployment path only supports ONNX preprocess models. '
+            f'Got: {preprocess_model_path}'
+        )
+    if not policy_model_path.endswith('.onnx'):
+        raise RuntimeError(
+            'The current deployment path only supports ONNX policy models. '
+            f'Got: {policy_model_path}. '
+            'If this is a training checkpoint, export it to ONNX or add the matching runtime network definition first.'
+        )
 
     navigation_policy_node = NavigationPolicyNode(
         preprocess_model_path=preprocess_model_path,
         policy_model_path=policy_model_path,
-        min_depth=0.25,
-        max_depth=10.0,
-        control_frequency=5.0,
+        odom_topic=known_args.odom_topic,
+        depth_topic=known_args.depth_topic,
+        joy_topic=known_args.joy_topic,
+        goal_topic=known_args.goal_topic,
+        cmd_vel_topic=known_args.cmd_vel_topic,
+        base_vel_topic=known_args.base_vel_topic,
+        min_depth=known_args.min_depth,
+        max_depth=known_args.max_depth,
+        control_frequency=known_args.control_frequency,
         use_sim=use_sim
     )
 
