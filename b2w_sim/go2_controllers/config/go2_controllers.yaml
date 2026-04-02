@@ -1,0 +1,56 @@
+go2_controllers:
+  ros__parameters:
+    use_sim_time: true
+
+    policy.package: go2_controllers
+    policy.relative_path: policy/policy.onnx
+    policy.path: ""
+
+    topics.odometry: /dlio/odom_node/odom
+    topics.cmd_vel: /path_manager/path_manager_ros/nav_vel
+    topics.joint_state: /joint_states
+
+    joint_model.names: [FR_hip_joint, FR_thigh_joint, FR_calf_joint,
+                        FL_hip_joint, FL_thigh_joint, FL_calf_joint,
+                        RR_hip_joint, RR_thigh_joint, RR_calf_joint,
+                        RL_hip_joint, RL_thigh_joint, RL_calf_joint]
+
+    joint_model.command_topics: [/FR_hip_joint_position_cmd, /FR_thigh_joint_position_cmd, /FR_calf_joint_position_cmd,
+                                 /FL_hip_joint_position_cmd, /FL_thigh_joint_position_cmd, /FL_calf_joint_position_cmd,
+                                 /RR_hip_joint_position_cmd, /RR_thigh_joint_position_cmd, /RR_calf_joint_position_cmd,
+                                 /RL_hip_joint_position_cmd, /RL_thigh_joint_position_cmd, /RL_calf_joint_position_cmd]
+
+    joint_model.reorder_indices: [3, 4, 5,
+                                  0, 1, 2,
+                                  9, 10, 11,
+                                  6, 7, 8]
+
+    joint_model.default_positions: [0.0, 0.8, -1.5,
+                                    0.0, 0.8, -1.5,
+                                    0.0, 0.8, -1.5,
+                                    0.0, 0.8, -1.5]
+
+    joint_model.action_scales: [0.125, 0.25, 0.25,
+                                0.125, 0.25, 0.25,
+                                0.125, 0.25, 0.25,
+                                0.125, 0.25, 0.25]
+
+    joint_model.publish_joint_array: true
+
+    observation_scales.base_ang_vel: 0.25
+    observation_scales.joint_pos: 1.0
+    observation_scales.joint_vel: 0.05
+    observation_scales.velocity_commands: 1.0
+    observation_scales.actions: 1.0
+
+    environment.profile: default
+    environment.base_position: [0.0, 0.0, 0.0]
+    environment.base_orientation_rpy: [0.0, 0.0, 0.0]
+
+    environment.profiles.default.default_joint_positions: [0.0, 0.8, -1.5,
+                                                           0.0, 0.8, -1.5,
+                                                           0.0, 0.8, -1.5,
+                                                           0.0, 0.8, -1.5]
+
+    environment.profiles.default.base_position: [0.0, 0.0, 0.0]
+    environment.profiles.default.base_orientation_rpy: [0.0, 0.0, 0.0]
