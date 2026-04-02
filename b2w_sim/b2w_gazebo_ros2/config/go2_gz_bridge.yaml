@@ -34,8 +34,8 @@
   gz_type_name: "gz.msgs.PointCloudPacked"
   direction: GZ_TO_ROS
 
-- ros_topic_name: "/zed/zed_node/depth/depth_registered"
-  gz_topic_name: "/zed_x_camera"
+- ros_topic_name: "/realsense/depth/image_rect_raw"
+  gz_topic_name: "/realsense_d435_depth"
   gz_type_name: "gz.msgs.Image"
   ros_type_name: "sensor_msgs/msg/Image"
   direction: GZ_TO_ROS

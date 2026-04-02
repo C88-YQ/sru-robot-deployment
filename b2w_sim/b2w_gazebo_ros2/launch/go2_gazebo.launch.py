@@ -8,25 +8,25 @@ from launch_ros.substitutions import FindPackageShare
 
 def generate_launch_description():
     controller_params_default = PathJoinSubstitution([
-        FindPackageShare("b2w_controllers"),
+        FindPackageShare("go2_controllers"),
         "config",
-        "b2w_controllers.yaml",
+        "go2_controllers.yaml",
     ])
     bridge_config_default = PathJoinSubstitution([
         FindPackageShare("b2w_gazebo_ros2"),
         "config",
-        "b2w_gz_bridge.yaml",
+        "go2_gz_bridge.yaml",
     ])
 
     declared_arguments = [
         DeclareLaunchArgument(
             "robot_description_package",
-            default_value="b2w_description_ros2",
+            default_value="go2_description",
             description="Package that provides the robot description launch file",
         ),
         DeclareLaunchArgument(
             "robot_name",
-            default_value="b2w",
+            default_value="go2",
             description="Entity name used when spawning the robot in Gazebo",
         ),
         DeclareLaunchArgument(
@@ -85,7 +85,7 @@ def generate_launch_description():
         ),
         DeclareLaunchArgument(
             "collision_torque_threshold",
-            default_value="200.0",
+            default_value="30.0",
             description="Combined torque threshold used by collision_monitor",
         ),
     ]
@@ -131,9 +131,9 @@ def generate_launch_description():
 
     # Kinematics controller node
     kinematics_controller = Node(
-        package="b2w_controllers",
-        executable="b2w_controllers",
-        name="b2w_controllers",
+        package="go2_controllers",
+        executable="go2_controllers",
+        name="go2_controllers",
         output="screen",
         parameters=[
             LaunchConfiguration("controller_params_file"),

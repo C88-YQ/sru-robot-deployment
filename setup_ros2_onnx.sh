@@ -2,7 +2,7 @@
 
 set -e
 
-VENV_NAME="ros2_onnx"
+VENV_NAME="ros2_onnx_1"
 VENV_PATH="${HOME}/${VENV_NAME}"
 
 echo "========================================="
@@ -74,7 +74,7 @@ echo "========================================="
 
 if [ "$HAS_GPU" = true ]; then
     echo "Installing ONNX Runtime with GPU support..."
-    pip install onnxruntime-gpu
+    pip install onnxruntime-gpu==1.21.0
 
     # Verify GPU installation
     echo ""
@@ -92,7 +92,7 @@ if [ "$HAS_GPU" = true ]; then
     fi
 else
     echo "Installing CPU-only version of ONNX Runtime..."
-    pip install onnxruntime
+    pip install onnxruntime==1.21.0
 
     echo ""
     echo "Verifying ONNX Runtime CPU installation..."
@@ -105,7 +105,7 @@ echo "========================================="
 echo "Installing Python dependencies..."
 echo "========================================="
 
-pip install numpy scipy opencv-python pyyaml
+pip install numpy==1.26.4 scipy opencv-python pyyaml
 
 # Install ROS2 Python dependencies (if not already available from system)
 echo ""

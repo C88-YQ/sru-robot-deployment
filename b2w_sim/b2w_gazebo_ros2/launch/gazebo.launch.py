@@ -27,6 +27,25 @@ def generate_launch_description():
     
     declared_arguments = [
         DeclareLaunchArgument(
+            "robot_description_package",
+            default_value="go2_description",
+            description="Package that provides the robot description launch file",
+        ),
+        DeclareLaunchArgument(
+            "robot_name",
+            default_value="go2",
+            description="Entity name used when spawning the robot in Gazebo",
+        ),
+        DeclareLaunchArgument(
+            "bridge_config_file",
+            default_value=PathJoinSubstitution([
+                FindPackageShare("b2w_gazebo_ros2"),
+                "config",
+                "go2_gz_bridge.yaml",
+            ]),
+            description="Path to the ros_gz bridge configuration file",
+        ),
+        DeclareLaunchArgument(
             "world_file",
             default_value="ISAACLAB_TRAIN.world",
             description="World file to load from b2w_sim_worlds/worlds",
@@ -46,7 +65,7 @@ def generate_launch_description():
     load_launch = IncludeLaunchDescription(
         PythonLaunchDescriptionSource([
             PathJoinSubstitution([
-                FindPackageShare("b2w_description_ros2"),
+                FindPackageShare(LaunchConfiguration("robot_description_package")),
                 "launch",
                 "load.launch.py"
             ])
@@ -101,7 +120,6 @@ def generate_launch_description():
             "gz_args": [
                 IfElseSubstitution(LaunchConfiguration("paused"), if_value="", else_value="-r "),
                 IfElseSubstitution(LaunchConfiguration("verbose"), if_value="-v4 ", else_value=""),
-                # LaunchConfiguration("world_file"),
                 world_file_path,
             ],
             "on_exit_shutdown": "true",
@@ -114,7 +132,7 @@ def generate_launch_description():
         executable="create",
         arguments=[
             "-topic", "robot_description",  # Use the topic from load.launch.py
-            "-name", "b2w",
+            "-name", LaunchConfiguration("robot_name"),
             "-x", LaunchConfiguration("x"),
             "-y", LaunchConfiguration("y"),
             "-z", LaunchConfiguration("z"),
@@ -122,11 +140,6 @@ def generate_launch_description():
         ],
         output="screen",
     )
-
-    # ros_gz_bridge config
-    ros_gz_bridge_config = PathJoinSubstitution([
-        FindPackageShare("b2w_gazebo_ros2"), "config", "b2w_gz_bridge.yaml"
-    ])
 
     ros_gz_bridge = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
@@ -136,7 +149,7 @@ def generate_launch_description():
         ),
         launch_arguments={
             "bridge_name": "ros_gz_bridge",
-            "config_file": ros_gz_bridge_config,
+            "config_file": LaunchConfiguration("bridge_config_file"),
         }.items(),
     )
 
