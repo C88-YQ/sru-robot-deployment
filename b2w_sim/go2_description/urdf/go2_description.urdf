@@ -103,9 +103,9 @@
     <plugin filename="gz-sim-joint-position-controller-system" name="gz::sim::systems::JointPositionController">
       <joint_name>FL_hip_joint</joint_name>
       <topic>FL_hip_joint_position_cmd</topic>
-      <p_gain>100.0</p_gain>
+      <p_gain>25.0</p_gain>
       <i_gain>0.0</i_gain>
-      <d_gain>5.0</d_gain>
+      <d_gain>0.5</d_gain>
     </plugin>
   </gazebo>
   <link name="FL_hip_rotor">
@@ -150,9 +150,9 @@
     <plugin filename="gz-sim-joint-position-controller-system" name="gz::sim::systems::JointPositionController">
       <joint_name>FL_thigh_joint</joint_name>
       <topic>FL_thigh_joint_position_cmd</topic>
-      <p_gain>300.0</p_gain>
+      <p_gain>25.0</p_gain>
       <i_gain>0.0</i_gain>
-      <d_gain>8.0</d_gain>
+      <d_gain>0.5</d_gain>
     </plugin>
   </gazebo>
   <link name="FL_thigh_rotor">
@@ -197,9 +197,9 @@
     <plugin filename="gz-sim-joint-position-controller-system" name="gz::sim::systems::JointPositionController">
       <joint_name>FL_calf_joint</joint_name>
       <topic>FL_calf_joint_position_cmd</topic>
-      <p_gain>300.0</p_gain>
+      <p_gain>25.0</p_gain>
       <i_gain>0.0</i_gain>
-      <d_gain>8.0</d_gain>
+      <d_gain>0.5</d_gain>
     </plugin>
   </gazebo>
   <link name="FL_calflower">
@@ -297,9 +297,9 @@
     <plugin filename="gz-sim-joint-position-controller-system" name="gz::sim::systems::JointPositionController">
       <joint_name>FR_hip_joint</joint_name>
       <topic>FR_hip_joint_position_cmd</topic>
-      <p_gain>100.0</p_gain>
+      <p_gain>25.0</p_gain>
       <i_gain>0.0</i_gain>
-      <d_gain>5.0</d_gain>
+      <d_gain>0.5</d_gain>
     </plugin>
   </gazebo>
   <link name="FR_hip_rotor">
@@ -344,9 +344,9 @@
     <plugin filename="gz-sim-joint-position-controller-system" name="gz::sim::systems::JointPositionController">
       <joint_name>FR_thigh_joint</joint_name>
       <topic>FR_thigh_joint_position_cmd</topic>
-      <p_gain>300.0</p_gain>
+      <p_gain>25.0</p_gain>
       <i_gain>0.0</i_gain>
-      <d_gain>8.0</d_gain>
+      <d_gain>0.5</d_gain>
     </plugin>
   </gazebo>
   <link name="FR_thigh_rotor">
@@ -391,9 +391,9 @@
     <plugin filename="gz-sim-joint-position-controller-system" name="gz::sim::systems::JointPositionController">
       <joint_name>FR_calf_joint</joint_name>
       <topic>FR_calf_joint_position_cmd</topic>
-      <p_gain>300.0</p_gain>
+      <p_gain>25.0</p_gain>
       <i_gain>0.0</i_gain>
-      <d_gain>8.0</d_gain>
+      <d_gain>0.5</d_gain>
     </plugin>
   </gazebo>
   <link name="FR_calflower">
@@ -491,9 +491,9 @@
     <plugin filename="gz-sim-joint-position-controller-system" name="gz::sim::systems::JointPositionController">
       <joint_name>RL_hip_joint</joint_name>
       <topic>RL_hip_joint_position_cmd</topic>
-      <p_gain>100.0</p_gain>
+      <p_gain>25.0</p_gain>
       <i_gain>0.0</i_gain>
-      <d_gain>5.0</d_gain>
+      <d_gain>0.5</d_gain>
     </plugin>
   </gazebo>
   <link name="RL_hip_rotor">
@@ -538,9 +538,9 @@
     <plugin filename="gz-sim-joint-position-controller-system" name="gz::sim::systems::JointPositionController">
       <joint_name>RL_thigh_joint</joint_name>
       <topic>RL_thigh_joint_position_cmd</topic>
-      <p_gain>300.0</p_gain>
+      <p_gain>25.0</p_gain>
       <i_gain>0.0</i_gain>
-      <d_gain>8.0</d_gain>
+      <d_gain>0.5</d_gain>
     </plugin>
   </gazebo>
   <link name="RL_thigh_rotor">
@@ -585,9 +585,9 @@
     <plugin filename="gz-sim-joint-position-controller-system" name="gz::sim::systems::JointPositionController">
       <joint_name>RL_calf_joint</joint_name>
       <topic>RL_calf_joint_position_cmd</topic>
-      <p_gain>300.0</p_gain>
+      <p_gain>25.0</p_gain>
       <i_gain>0.0</i_gain>
-      <d_gain>8.0</d_gain>
+      <d_gain>0.5</d_gain>
     </plugin>
   </gazebo>
   <link name="RL_calflower">
@@ -685,9 +685,9 @@
     <plugin filename="gz-sim-joint-position-controller-system" name="gz::sim::systems::JointPositionController">
       <joint_name>RR_hip_joint</joint_name>
       <topic>RR_hip_joint_position_cmd</topic>
-      <p_gain>100.0</p_gain>
+      <p_gain>25.0</p_gain>
       <i_gain>0.0</i_gain>
-      <d_gain>5.0</d_gain>
+      <d_gain>0.5</d_gain>
     </plugin>
   </gazebo>
   <link name="RR_hip_rotor">
@@ -732,9 +732,9 @@
     <plugin filename="gz-sim-joint-position-controller-system" name="gz::sim::systems::JointPositionController">
       <joint_name>RR_thigh_joint</joint_name>
       <topic>RR_thigh_joint_position_cmd</topic>
-      <p_gain>300.0</p_gain>
+      <p_gain>25.0</p_gain>
       <i_gain>0.0</i_gain>
-      <d_gain>8.0</d_gain>
+      <d_gain>0.5</d_gain>
     </plugin>
   </gazebo>
   <link name="RR_thigh_rotor">
@@ -779,9 +779,9 @@
     <plugin filename="gz-sim-joint-position-controller-system" name="gz::sim::systems::JointPositionController">
       <joint_name>RR_calf_joint</joint_name>
       <topic>RR_calf_joint_position_cmd</topic>
-      <p_gain>300.0</p_gain>
+      <p_gain>25.0</p_gain>
       <i_gain>0.0</i_gain>
-      <d_gain>8.0</d_gain>
+      <d_gain>0.5</d_gain>
     </plugin>
   </gazebo>
   <link name="RR_calflower">
