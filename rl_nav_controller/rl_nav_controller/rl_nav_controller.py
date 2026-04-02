@@ -654,7 +654,7 @@ class NavigationPolicyNode(Node):
         Args:
             joy_msg: Joystick message with axes and button states
         """
-        self.cmd_vel_ratio = (1.0 + joy_msg.axes[4]) * 1.0
+        self.cmd_vel_ratio = float(np.clip((1.0 + joy_msg.axes[4]) * 0.5, 0.0, 1.0))
 
         if joy_msg.buttons[constants.BUTTON_ABORT] == 1:
             self.is_abort_goal = True

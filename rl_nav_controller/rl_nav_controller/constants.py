@@ -9,7 +9,7 @@ NEAR_GOAL_THRESHOLD_MULTIPLIER = 2.0
 JOYSTICK_TIMEOUT = 15.0  # seconds
 
 # Model parameters
-POLICY_SCALE = [1.5, 1.0, 1.0]  # [linear_x, linear_y, angular_z]
+POLICY_SCALE = [0.8, 0.6, 0.8]  # [linear_x, linear_y, angular_z]
 LATERAL_VELOCITY_SCALE = 0.6  # Additional scale for lateral movement
 
 # Filter coefficients
