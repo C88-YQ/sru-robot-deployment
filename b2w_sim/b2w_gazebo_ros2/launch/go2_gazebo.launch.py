@@ -64,11 +64,6 @@ def generate_launch_description():
             description="Optional absolute path to override the policy file",
         ),
         DeclareLaunchArgument(
-            "enable_low_level_controller",
-            default_value="false",
-            description="Enable the low-level gazebo controller node",
-        ),
-        DeclareLaunchArgument(
             "enable_mesh_publisher",
             default_value="false",
             description="Publish Gazebo meshes as RViz markers",
@@ -144,15 +139,6 @@ def generate_launch_description():
         ],
     )
 
-    # Low-level gazebo controller node
-    low_level_controller = Node(
-        package="b2w_low_level_controller_gazebo",
-        executable="b2w_low_level_controller_gazebo",
-        name="b2w_low_level_controller_gazebo",
-        output="screen",
-        parameters=[{"use_sim_time": True}],
-        condition=IfCondition(enable_low_level_controller),
-    )
     # mesh publisher node
     mesh_publisher = Node(
         package="b2w_sim_worlds",
@@ -208,7 +194,6 @@ def generate_launch_description():
     return LaunchDescription(declared_arguments + [
         gazebo_launch,
         kinematics_controller,
-        low_level_controller,
         mesh_publisher,
         service_bridge,
         collision_monitor,
