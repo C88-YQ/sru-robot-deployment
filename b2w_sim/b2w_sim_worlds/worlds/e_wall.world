@@ -1,0 +1,133 @@
+<?xml version="1.0"?>
+<sdf version="1.10">
+  <world name="e_wall_world">
+    <model name="ground_plane">
+      <static>true</static>
+      <link name="link">
+        <collision name="collision">
+          <geometry>
+            <plane>
+              <normal>0 0 1</normal>
+              <size>100 100</size>
+            </plane>
+          </geometry>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <plane>
+              <normal>0 0 1</normal>
+              <size>100 100</size>
+            </plane>
+          </geometry>
+          <material>
+            <ambient>0.8 0.8 0.8 1</ambient>
+            <diffuse>0.8 0.8 0.8 1</diffuse>
+            <specular>0.8 0.8 0.8 1</specular>
+          </material>
+        </visual>
+      </link>
+    </model>
+
+    <light name="sun" type="directional">
+      <pose>0 0 10 0 0 0</pose>
+      <cast_shadows>true</cast_shadows>
+      <intensity>1</intensity>
+      <direction>-0.5 0.1 -0.9</direction>
+      <diffuse>0.8 0.8 0.8 1</diffuse>
+      <specular>0.2 0.2 0.2 1</specular>
+    </light>
+
+    <model name="e_wall">
+      <static>true</static>
+      <pose>28 0 1.0 0 0 0</pose>
+
+      <link name="spine">
+        <pose>0 0 0 0 0 0</pose>
+        <collision name="collision">
+          <geometry>
+            <box>
+              <size>0.45 10.0 2.0</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <box>
+              <size>0.45 10.0 2.0</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.2 0.2 0.25 1</ambient>
+            <diffuse>0.2 0.2 0.25 1</diffuse>
+          </material>
+        </visual>
+      </link>
+
+      <link name="top_bar">
+        <pose>-12.275 4.775 0 0 0 0</pose>
+        <collision name="collision">
+          <geometry>
+            <box>
+              <size>25.0 0.45 2.0</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <box>
+              <size>25.0 0.45 2.0</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.2 0.2 0.25 1</ambient>
+            <diffuse>0.2 0.2 0.25 1</diffuse>
+          </material>
+        </visual>
+      </link>
+
+      <link name="middle_bar">
+        <pose>-12.275 0 0 0 0 0</pose>
+        <collision name="collision">
+          <geometry>
+            <box>
+              <size>25.0 0.45 2.0</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <box>
+              <size>25.0 0.45 2.0</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.2 0.2 0.25 1</ambient>
+            <diffuse>0.2 0.2 0.25 1</diffuse>
+          </material>
+        </visual>
+      </link>
+
+      <link name="bottom_bar">
+        <pose>-12.275 -4.775 0 0 0 0</pose>
+        <collision name="collision">
+          <geometry>
+            <box>
+              <size>25.0 0.45 2.0</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <box>
+              <size>25.0 0.45 2.0</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.2 0.2 0.25 1</ambient>
+            <diffuse>0.2 0.2 0.25 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+  </world>
+</sdf>
