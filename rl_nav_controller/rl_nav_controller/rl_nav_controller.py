@@ -371,6 +371,7 @@ class NavigationPolicyNode(Node):
 
         # Utilities
         self.bridge = CvBridge()
+        self.policy_model_path = policy_model_path
         self.model = LearningModel(
             preprocess_model_path=preprocess_model_path,
             policy_model_path=policy_model_path
@@ -424,6 +425,11 @@ class NavigationPolicyNode(Node):
         self.create_timer(smart_joystick_interval, self.update_smart_joystick_goal)
 
         self.get_logger().info('\033[92m' + 'Navigation policy node is ready.' + '\033[0m')
+        self.get_logger().info(
+            '\033[1;92m'
+            + f'Loaded navigation policy: {os.path.basename(self.policy_model_path)}'
+            + '\033[0m'
+        )
         self.get_logger().info(
             f'Using topics: odom={odom_topic}, depth={depth_topic}, joy={joy_topic}, goal={goal_topic}'
         )
