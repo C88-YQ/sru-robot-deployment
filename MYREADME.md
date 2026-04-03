@@ -24,3 +24,9 @@ ros2 topic pub /goal_pose geometry_msgs/PoseStamped "{
 ```
 ros2 topic pub -r 10 /path_manager/path_manager_ros/nav_vel geometry_msgs/msg/Twist "{linear: {x: 1.0, y: 0.0, z: 0.0}, angular: {x: 0.0, y: 0.0, z: 0.0}}"
 ```
+
+policy格式转换
+```
+source ~/ros2_torch_export/bin/activate
+cd /home/c88/Worktree/SRU_project/sru-robot-deployment
+```
